@@ -1,0 +1,94 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+body{
+  background-color: #D0CAB0;
+  padding: 60px;
+}
+
+#map {
+        height: 400px;
+        width: 800px;
+      }
+
+#green
+{
+  color: #194719;
+}
+
+#maroon
+{
+  color: #800000;
+}
+
+#right{
+  width: auto;
+  float: right;
+}
+
+#logo {
+  position: absolute;
+  left: 20px;
+  text-align: center;
+  margin: auto;
+  float: left;
+  font-size: 2.0em;
+  color: #F49100;
+  text-transform: uppercase;
+  letter-spacing: -7px;
+  font-weight: normal;
+  padding-top: 5px;
+}
+
+#logo:hover {
+  text-decoration: none;
+  font-weight: bold;
+  background-color:#473119;
+}
+
+.navbar-default{
+  background-color: #473119;
+
+}
+
+.navbar-default .navbar-nav > a {
+    color: #F49100;
+}
+
+.navbar-default .navbar-nav > a:hover {
+    color: #F49100;
+    background-color:#473119;
+}
+
+a:link{
+  color: #787878; 
+}
+
+#grey{
+  color: #787878; 
+}
+
+a:hover{
+  background-color: #D0CAB0;
+  color: #787878; 
+}
+
+#addPadding{
+  padding-top: 14px;
+}

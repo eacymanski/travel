@@ -1,0 +1,16 @@
+
+[1mFrom:[0m /home/ubuntu/workspace/travel/app/models/destination.rb @ line 75 Destination#updateLatLong:
+
+    [1;34m65[0m: [32mdef[0m [1;34mupdateLatLong[0m
+    [1;34m66[0m:   uri = [31m[1;31m"[0m[31mhttps://maps.googleapis.com/maps/api/geocode/json?address=[1;31m"[0m[31m[0m+city+[31m[1;31m"[0m[31m,+[1;31m"[0m[31m[0m+state+[31m[1;31m'[0m[31m&key=AIzaSyA8Fri1EieFp_cOgtin8sb3MlChwG_Y2cc[1;31m'[0m[31m[0m
+    [1;34m67[0m:   url=[1;34;4mURI[0m.parse(uri)
+    [1;34m68[0m:   req = [1;34;4mNet[0m::[1;34;4mHTTP[0m::[1;34;4mGet[0m.new(url.to_s)
+    [1;34m69[0m:   http = [1;34;4mNet[0m::[1;34;4mHTTP[0m.new(url.host, url.port)
+    [1;34m70[0m:   http.use_ssl = [1;36mtrue[0m
+    [1;34m71[0m:   res=[1;34;4mActiveSupport[0m::[1;34;4mJSON[0m.decode(http.request(req).body)
+    [1;34m72[0m:   [1;36mself[0m.latitude = res[[31m[1;31m'[0m[31mresults[1;31m'[0m[31m[0m].first[[31m[1;31m'[0m[31mgeometry[1;31m'[0m[31m[0m][[31m[1;31m'[0m[31mlocation[1;31m'[0m[31m[0m][[31m[1;31m'[0m[31mlat[1;31m'[0m[31m[0m]
+    [1;34m73[0m:   [1;36mself[0m.longitude = res[[31m[1;31m'[0m[31mresults[1;31m'[0m[31m[0m].first[[31m[1;31m'[0m[31mgeometry[1;31m'[0m[31m[0m][[31m[1;31m'[0m[31mlocation[1;31m'[0m[31m[0m][[31m[1;31m'[0m[31mlong[1;31m'[0m[31m[0m]
+    [1;34m74[0m:   save
+ => [1;34m75[0m:   binding.pry
+    [1;34m76[0m: [32mend[0m
+

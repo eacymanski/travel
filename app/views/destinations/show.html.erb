@@ -1,13 +1,6 @@
 <p id="notice"><%= notice %></p>
 <body>
-   <header class="navbar navbar-fixed-top navbar-default">
-      <div class="container">
-          <%=link_to "CYMANSKI", destinations_path, id: "logo"%>
-          <nav class="navbar-nav nav navbar-right" id="addPadding">
-              <%=link_to "Destinations", destinations_path%>
-          </nav>
-      </div>
-    </header>
+
 
 <div class="row">
   <div class = "col-md-9">
@@ -27,7 +20,9 @@
 <p>
   <h3>Distances To:</h3>
   <%places=@destination.city_distances.sort_by(&:distance)%>
-  <%places.each do |des| %>
+  <%places.count>9 ? max = 9 : max=places.count-1%>
+  <%for i in 0..max%>
+    <%des=places[i] %>
      <%=link_to Destination.find(des.final_destination).city, Destination.find(des.final_destination) %> | <%=des.distance/1600%>
     <br>
   <%end%>

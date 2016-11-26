@@ -2,28 +2,20 @@ class DestinationsController < ApplicationController
   include DestinationsHelper
   before_action :set_destination, only: [:show, :edit, :update, :destroy]
 
-  # GET /destinations
-  # GET /destinations.json
   def index
     @destinations = Destination.all
   end
 
-  # GET /destinations/1
-  # GET /destinations/1.json
   def show
   end
 
-  # GET /destinations/new
   def new
     @destination = Destination.new
   end
 
-  # GET /destinations/1/edit
   def edit
   end
 
-  # POST /destinations
-  # POST /destinations.json
   def create
     @destination = Destination.new(destination_params)
 
@@ -40,8 +32,6 @@ class DestinationsController < ApplicationController
     @destination.updateLatLong
   end
 
-  # PATCH/PUT /destinations/1
-  # PATCH/PUT /destinations/1.json
   def update
     respond_to do |format|
       if @destination.update(destination_params)
@@ -54,8 +44,6 @@ class DestinationsController < ApplicationController
     end
   end
 
-  # DELETE /destinations/1
-  # DELETE /destinations/1.json
   def destroy
     removeDistance(@destination)
     @destination.destroy
@@ -64,16 +52,12 @@ class DestinationsController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
-  
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_destination
       @destination = Destination.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def destination_params
       params.require(:destination).permit(:city, :state, :picture)
     end

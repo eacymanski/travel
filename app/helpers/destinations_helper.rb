@@ -17,7 +17,7 @@ module DestinationsHelper
         end
         uri=uri+'&key=AIzaSyAfTrqJtxTAB-8MIEnIt22pi2Kfp37Xxps'
         puts uri
-        url=URI.parse(uri)
+        url=URI.parse(URI.encode(uri))
         req = Net::HTTP::Get.new(url.to_s)
         http = Net::HTTP.new(url.host, url.port)
         http.use_ssl = true

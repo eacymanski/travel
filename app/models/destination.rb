@@ -1,11 +1,12 @@
 class Destination < ActiveRecord::Base
+  require 'net/http'
   has_many :city_distances
   has_many :destinations, through: :city_distances, source: :final_destination, :dependent => :destroy
-  
+
   has_many :city_times
-   has_many :destinations, through: :city_times, source: :final_destination
-  
-  
+  has_many :destinations, through: :city_times, source: :final_destination
+
+
   STATES = Array[ ["AK", "Alaska"], 
                     ["AL", "Alabama"], 
                     ["AR", "Arkansas"], 
@@ -64,7 +65,7 @@ class Destination < ActiveRecord::Base
   
     def updateLatLong
       uri = "https://maps.googleapis.com/maps/api/geocode/json?address="+city+",+"+state+'&key=AIzaSyA8Fri1EieFp_cOgtin8sb3MlChwG_Y2cc'
-      url=URI.parse(uri)
+      url=URI.parse(URI.encode(uri))
       req = Net::HTTP::Get.new(url.to_s)
       http = Net::HTTP.new(url.host, url.port)
       http.use_ssl = true

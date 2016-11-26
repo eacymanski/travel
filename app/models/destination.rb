@@ -6,6 +6,7 @@ class Destination < ActiveRecord::Base
   has_many :city_times
   has_many :destinations, through: :city_times, source: :final_destination
 
+  belongs_to :trip
 
   STATES = Array[ ["AK", "Alaska"], 
                     ["AL", "Alabama"], 

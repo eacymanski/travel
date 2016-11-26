@@ -10,6 +10,7 @@ class DestinationsController < ApplicationController
   end
 
   def new
+    @current_trip = params[:trip_id]
     @destination = Destination.new
   end
 
@@ -59,6 +60,6 @@ class DestinationsController < ApplicationController
     end
 
     def destination_params
-      params.require(:destination).permit(:city, :state, :picture)
+      params.require(:destination).permit(:city, :state, :picture, :trip_id)
     end
 end

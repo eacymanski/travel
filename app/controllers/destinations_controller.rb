@@ -2,10 +2,6 @@ class DestinationsController < ApplicationController
   include DestinationsHelper
   before_action :set_destination, only: [:show, :edit, :update, :destroy]
 
-  def index
-    @destinations = Destination.all
-  end
-
   def show
   end
 

@@ -8,8 +8,9 @@
   <strong><%= @destination.city %>, <%= @destination.state %></strong>
   
 </h1>
-
-<img src = <%=@destination.picture%> width="540" height="auto" >
+<% unless @destination.picture.empty? %>
+  <img src = <%=@destination.picture%> width="540" height="auto" >
+<% end %>
 <br>
 <br>
 <%= link_to 'Edit', edit_destination_path(@destination) %> |

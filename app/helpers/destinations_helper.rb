@@ -1,15 +1,16 @@
 module DestinationsHelper
   def getDistances(destination)
-    if Destination.count>1
+    trip_destinations = destination.trip.destinations
+    if trip_destinations.count>1
       i=0
-      num=Destination.count
+      num=trip_destinations.count
       destination.city_distances.clear
       while i<num
        uri = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins='+destination.city+'+'+destination.state+'&destinations='
         j=0
         hold =i
         while j<40 && i <num
-          des = Destination.all[i]
+          des = trip_destinations[i]
           uri=uri+des.city+'+'+des.state if des!=destination
           uri=uri+'|' if i!=num-1 || j!=39
           j+=1
@@ -28,7 +29,7 @@ module DestinationsHelper
         j=0
         i=hold
         while j<40 && i<num
-          des = Destination.all[i]
+          des = trip_destinations[i]
           if des!=destination
             if distances[count]['status']!="ZERO_RESULTS"
               km=distances[count]['distance']['value']

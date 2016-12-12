@@ -2,13 +2,11 @@ class DestinationsController < ApplicationController
   include DestinationsHelper
   before_action :set_destination, only: [:show, :edit, :update, :destroy]
 
-  def index
-    @destinations = Destination.all
-  end
   def show
   end
 
   def new
+    @current_trip = params[:trip_id]
     @destination = Destination.new
   end
 
@@ -51,17 +49,15 @@ class DestinationsController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
-  
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_destination
-      @destination = Destination.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def destination_params
-      params.require(:destination).permit(:city, :state, :picture)
-    end
+  def set_destination
+    @destination = Destination.find(params[:id])
+  end
+
+  def destination_params
+    params.require(:destination).permit(:city, :state, :picture, :trip_id)
+  end
+
 end

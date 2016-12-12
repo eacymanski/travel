@@ -1,11 +1,13 @@
 class Destination < ActiveRecord::Base
+  require 'net/http'
   has_many :city_distances
   has_many :destinations, through: :city_distances, source: :final_destination, :dependent => :destroy
-  
+
   has_many :city_times
-   has_many :destinations, through: :city_times, source: :final_destination
-  
-  
+  has_many :destinations, through: :city_times, source: :final_destination
+
+  belongs_to :trip
+
   STATES = Array[ ["AK", "Alaska"], 
                     ["AL", "Alabama"], 
                     ["AR", "Arkansas"], 

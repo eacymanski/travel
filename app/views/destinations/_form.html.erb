@@ -23,10 +23,6 @@
     <%= f.select :state, Destination::STATES %>
      <%end%>
   </div>
-  <div class="field">
-    <%= f.label :picture %><br>
-    <%= f.text_field :picture %>
-  </div>
   <%= f.hidden_field :trip_id, value: @current_trip %>
   <div class="actions">
     <%= f.submit %>

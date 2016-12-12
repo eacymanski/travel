@@ -14,19 +14,17 @@ class DestinationsController < ApplicationController
   end
 
   def create
-    @destination = Destination.new(destination_params)
-
-    respond_to do |format|
-      if @destination.save
-        format.html { redirect_to @destination, notice: 'Destination was successfully created.' }
-        format.json { render :show, status: :created, location: @destination }
-      else
-        format.html { render :new }
-        format.json { render json: @destination.errors, status: :unprocessable_entity }
-      end
+    create_params = destination_params.merge \
+      latitude: google_api.latitude,
+      longitude: google_api.longitude,
+      picture: google_api.photo_url
+    destination = Destination.new(create_params)
+    if destination.save
+      render :show, destination.id
+    else
+      render :new
     end
-    getDistances(@destination)
-    @destination.updateLatLong
+    google_api.get_distances(id)
   end
 
   def update
@@ -60,4 +58,7 @@ class DestinationsController < ApplicationController
     params.require(:destination).permit(:city, :state, :picture, :trip_id)
   end
 
+  def google_api
+    @google_api ||= GoogleApi.new(destination_params[:city], destination_params[:state])
+  end
 end

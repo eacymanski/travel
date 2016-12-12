@@ -63,17 +63,4 @@ class Destination < ActiveRecord::Base
                     ["WI", "Wisconsin"], 
                     ["WV", "West Virginia"], 
                     ["WY", "Wyoming"] ]
-  
-    def updateLatLong
-      uri = "https://maps.googleapis.com/maps/api/geocode/json?address="+city+",+"+state+'&key=AIzaSyA8Fri1EieFp_cOgtin8sb3MlChwG_Y2cc'
-      url=URI.parse(uri)
-      req = Net::HTTP::Get.new(url.to_s)
-      http = Net::HTTP.new(url.host, url.port)
-      http.use_ssl = true
-      res=ActiveSupport::JSON.decode(http.request(req).body)
-      self.latitude=res['results'].first['geometry']['location']['lat']
-      self.longitude=res['results'].first['geometry']['location']['lng']
-      save
-    end
-  
 end

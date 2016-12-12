@@ -14,10 +14,6 @@ class DestinationsController < ApplicationController
   end
 
   def create
-    create_params = destination_params.merge \
-      latitude: google_api.latitude,
-      longitude: google_api.longitude,
-      picture: google_api.photo_url
     destination = Destination.new(create_params)
     if destination.save
       render :show, destination.id
@@ -28,24 +24,17 @@ class DestinationsController < ApplicationController
   end
 
   def update
-    respond_to do |format|
-      if @destination.update(destination_params)
-        format.html { redirect_to @destination, notice: 'Destination was successfully updated.' }
-        format.json { render :show, status: :ok, location: @destination }
-      else
-        format.html { render :edit }
-        format.json { render json: @destination.errors, status: :unprocessable_entity }
-      end
+    if @destination.update(destination_params)
+      redirect_to @destination
+    else
+      render :edit
     end
   end
 
   def destroy
     removeDistance(@destination)
     @destination.destroy
-    respond_to do |format|
-      format.html { redirect_to destinations_url, notice: 'Destination was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to destinations_url
   end
 
   private
@@ -58,7 +47,15 @@ class DestinationsController < ApplicationController
     params.require(:destination).permit(:city, :state, :picture, :trip_id)
   end
 
+  def create_params
+    destination_params.merge \
+      latitude: google_api.latitude,
+      longitude: google_api.longitude,
+      picture: google_api.photo_url
+  end
+
   def google_api
-    @google_api ||= GoogleApi.new(destination_params[:city], destination_params[:state])
+    @google_api ||= GoogleApi.new(destination_params[:city],
+                                  destination_params[:state])
   end
 end

@@ -13,11 +13,16 @@ class GoogleApi
   attr_reader :city, :state
 
   def geocode_search
-    @geocode_search ||= HTTParty.get(GOOGLE_GEOCODE_URL, query: { address: city + ',' + state, key: API_KEY })
+    @geocode_search ||= HTTParty.get(GOOGLE_GEOCODE_URL, query: geocode_query)
   end
 
   def place_search
-    @place_seach ||= HTTParty.get(GOOGLE_PLACE_URL, query: { placeid: place_id, key: API_KEY })
+    @place_seach ||= HTTParty.get(GOOGLE_PLACE_URL, query: place_query)
+  end
+
+  def distance_search(desination_id)
+    @distance_search ||= HTTParty.get(GOOGLE_DISTANCE_URL,
+                                      query: distance_query(desination_id))
   end
 
   def latitude
@@ -44,19 +49,24 @@ class GoogleApi
     GOOGLE_IMAGE_URL + '?photoreference=' + photo_reference + '&key=' + API_KEY + '&maxwidth=540'
   end
 
-  def get_distances
+  def distances
     distance_search
   end
 
-  def distance_search(desination_id)
-    @distance_search ||= HTTParty.get(GOOGLE_DISTANCE_URL, query: distance_query(desination_id))
+  def geocode_query
+    { address: city + ',' + state,
+      key: API_KEY }
+  end
+
+  def place_query
+    { placeid: place_id,
+      key: API_KEY }
   end
 
   def distance_query(destination_id)
     other_destinations = Destination.where('id !=?', destination_id)
     { key: API_KEY,
-      origins: city+','+state,
-      destinations: other_destinations.map { |d| d.city + ',' + d.state }.join('|')
-    }
+      origins: city + ',' + state,
+      destinations: other_destinations.map { |d| d.city + ',' + d.state }.join('|') }
   end
 end

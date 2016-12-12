@@ -53,5 +53,4 @@ module DestinationsHelper
       end
     end
   end
-  
 end

@@ -2,79 +2,84 @@ class DestinationsController < ApplicationController
   include DestinationsHelper
   before_action :set_destination, only: [:show, :edit, :update, :destroy]
 
-  # GET /destinations
-  # GET /destinations.json
-  def index
-    @destinations = Destination.all
-  end
-
-  # GET /destinations/1
-  # GET /destinations/1.json
   def show
   end
 
-  # GET /destinations/new
   def new
+    @current_trip = params[:trip_id]
     @destination = Destination.new
   end
 
-  # GET /destinations/1/edit
   def edit
   end
 
-  # POST /destinations
-  # POST /destinations.json
   def create
-    @destination = Destination.new(destination_params)
-
-    respond_to do |format|
-      if @destination.save
-        format.html { redirect_to @destination, notice: 'Destination was successfully created.' }
-        format.json { render :show, status: :created, location: @destination }
-      else
-        format.html { render :new }
-        format.json { render json: @destination.errors, status: :unprocessable_entity }
-      end
+    @destination = Destination.new(create_params)
+    if @destination.save
+      redirect_to destination_path(@destination)
+    else
+      render :new
     end
-    getDistances(@destination)
-    @destination.updateLatLong
+    create_distances
   end
 
-  # PATCH/PUT /destinations/1
-  # PATCH/PUT /destinations/1.json
   def update
-    respond_to do |format|
-      if @destination.update(destination_params)
-        format.html { redirect_to @destination, notice: 'Destination was successfully updated.' }
-        format.json { render :show, status: :ok, location: @destination }
-      else
-        format.html { render :edit }
-        format.json { render json: @destination.errors, status: :unprocessable_entity }
-      end
+    if @destination.update(destination_params)
+      redirect_to @destination
+    else
+      render :edit
     end
   end
 
-  # DELETE /destinations/1
-  # DELETE /destinations/1.json
   def destroy
+    trip = @destination.trip_id
     removeDistance(@destination)
     @destination.destroy
-    respond_to do |format|
-      format.html { redirect_to destinations_url, notice: 'Destination was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to trip_path(trip)
   end
-  
-  
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_destination
-      @destination = Destination.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def destination_params
-      params.require(:destination).permit(:city, :state, :picture)
+  def set_destination
+    @destination = Destination.find(params[:id])
+  end
+
+  def destination_params
+    params.require(:destination).permit(:city, :state, :picture, :trip_id)
+  end
+
+  def create_params
+    destination_params.merge \
+      latitude: google_api.latitude,
+      longitude: google_api.longitude,
+      picture: google_api.photo_url
+  end
+
+  def google_api
+    @google_api ||= GoogleApi.new(destination_params[:city],
+                                  destination_params[:state])
+  end
+
+  def create_distances
+    return if other_destinations.empty?
+    results = google_api.distance_results(other_destinations)
+    results.each_with_index do |result, i|
+      create_distance(result, other_destinations[i])
     end
+  end
+
+  def other_destinations
+    @other_destinations ||= Destination.where('id != ?', @destination.id)
+  end
+
+  def create_distance(result, other_destination)
+    @destination.city_distances.create(
+      final_destination: other_destination,
+      distance: result['distance']['value']
+    )
+    other_destination.city_distances.create(
+      final_destination: @destination,
+      distance: result['distance']['value']
+    )
+  end
 end

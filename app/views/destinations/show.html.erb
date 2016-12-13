@@ -1,19 +1,15 @@
 <p id="notice"><%= notice %></p>
 <body>
-
-
 <div class="row">
   <div class = "col-md-9">
 <h1>
   <strong><%= @destination.city %>, <%= @destination.state %></strong>
-  
 </h1>
-
-<img src = <%=@destination.picture%> width="540" height="auto" >
+<img src=<%=@destination.picture %>>
 <br>
 <br>
 <%= link_to 'Edit', edit_destination_path(@destination) %> |
-<%= link_to 'Back', destinations_path %> | 
+<%= link_to 'Back', trip_path(@destination.trip) %> |
 <%= link_to 'Destroy', @destination, method: :delete, data: { confirm: 'Are you sure?' } %>
 </div>
 <div class="col-md-3">

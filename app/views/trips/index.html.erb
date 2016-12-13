@@ -1,0 +1,6 @@
+<!DOCTYPE html>
+<h1>Trip</h1>
+<ul id = "grey">
+<% @trips.each do |trip| %>
+  <li> <%= link_to trip.title, trip%> </li>
+<%end%>

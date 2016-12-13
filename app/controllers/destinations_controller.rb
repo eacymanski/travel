@@ -82,4 +82,13 @@ class DestinationsController < ApplicationController
       distance: result['distance']['value']
     )
   end
+
+  def remove_distances
+    Destination.all.each do |des|
+      if des != destination
+        to_destroy = des.city_distances.where(final_destination: destination)
+        to_destroy.destroy_all
+      end
+    end
+  end
 end

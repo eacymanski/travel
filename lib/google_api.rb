@@ -20,9 +20,9 @@ class GoogleApi
     @place_seach ||= HTTParty.get(GOOGLE_PLACE_URL, query: place_query)
   end
 
-  def distance_search(desination_id)
+  def distance_search(other_destinations)
     @distance_search ||= HTTParty.get(GOOGLE_DISTANCE_URL,
-                                      query: distance_query(desination_id))
+                                      query: distance_query(other_destinations))
   end
 
   def latitude
@@ -42,15 +42,17 @@ class GoogleApi
   end
 
   def photo_reference
+    return nil if place_search['result']['photos'].nil?
     place_search['result']['photos'].first['photo_reference']
   end
 
   def photo_url
+    return if photo_reference.nil?
     GOOGLE_IMAGE_URL + '?photoreference=' + photo_reference + '&key=' + API_KEY + '&maxwidth=540'
   end
 
-  def distances
-    distance_search
+  def distance_results(other_destinations)
+    distance_search(other_destinations)['rows'][0]['elements']
   end
 
   def geocode_query
@@ -63,8 +65,7 @@ class GoogleApi
       key: API_KEY }
   end
 
-  def distance_query(destination_id)
-    other_destinations = Destination.where('id !=?', destination_id)
+  def distance_query(other_destinations)
     { key: API_KEY,
       origins: city + ',' + state,
       destinations: other_destinations.map { |d| d.city + ',' + d.state }.join('|') }

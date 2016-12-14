@@ -1,5 +1,4 @@
 class DestinationsController < ApplicationController
-  include DestinationsHelper
   before_action :set_destination, only: [:show, :edit, :update, :destroy]
 
   def show
@@ -33,7 +32,7 @@ class DestinationsController < ApplicationController
 
   def destroy
     trip = @destination.trip_id
-    removeDistance(@destination)
+    remove_distances(@destination)
     @destination.destroy
     redirect_to trip_path(trip)
   end
@@ -83,7 +82,7 @@ class DestinationsController < ApplicationController
     )
   end
 
-  def remove_distances
+  def remove_distances(destination)
     Destination.all.each do |des|
       if des != destination
         to_destroy = des.city_distances.where(final_destination: destination)

@@ -1,5 +1,5 @@
 class DestinationsController < ApplicationController
-  before_action :set_destination, only: [:show, :edit, :update, :destroy]
+  before_action :set_destination, except: [:new, :create]
 
   def show
   end
@@ -35,6 +35,13 @@ class DestinationsController < ApplicationController
     remove_distances(@destination)
     @destination.destroy
     redirect_to trip_path(trip)
+  end
+
+  def default_image
+    params.merge!({"destination"=> {"city" => @destination.city, "state" => @destination.state}})
+    @destination.picture = google_api.photo_url
+    @destination.save
+    redirect_to @destination
   end
 
   private

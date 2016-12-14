@@ -1,29 +1,31 @@
 <p id="notice"><%= notice %></p>
 <body>
-<div class="row">
-  <div class = "col-md-9">
-<h1>
-  <strong><%= @destination.city %>, <%= @destination.state %></strong>
-</h1>
-<img src=<%=@destination.picture %>>
-<br>
-<br>
-<%= link_to 'Edit', edit_destination_path(@destination) %> |
-<%= link_to 'Back', trip_path(@destination.trip) %> |
-<%= link_to 'Destroy', @destination, method: :delete, data: { confirm: 'Are you sure?' } %>
-</div>
-<div class="col-md-3">
-<p>
-  <h3>Distances To:</h3>
-  <%places=@destination.city_distances.sort_by(&:distance)%>
-  <%places.count>9 ? max = 9 : max=places.count-1%>
-  <%for i in 0..max%>
-    <%des=places[i] %>
-     <%=link_to Destination.find(des.final_destination).city, Destination.find(des.final_destination) %> | <%=des.distance/1600%>
-    <br>
-  <%end%>
-</p>
-</div>
+  <div class="row">
+    <div class = "col-md-9">
+      <h1>
+        <strong><%= @destination.city %>, <%= @destination.state %></strong>
+      </h1>
+      <%if !@destination.picture.empty? %>
+        <img src=<%=@destination.picture %> width="540" height="auto">
+        <br>
+        <br>
+      <%end%>
+      <%= link_to 'Edit', edit_destination_path(@destination) %> |
+      <%= link_to 'Back', trip_path(@destination.trip) %> |
+      <%= link_to 'Destroy', @destination, method: :delete, data: { confirm: 'Are you sure?' } %>
+    </div>
+    <div class="col-md-3">
+      <p>
+      <h3>Distances To:</h3>
+      <%places=@destination.city_distances.sort_by(&:distance)%>
+      <%places.count>9 ? max = 9 : max=places.count-1%>
+      <%for i in 0..max%>
+        <%des=places[i] %>
+        <%=link_to Destination.find(des.final_destination).city, Destination.find(des.final_destination) %> | <%=des.distance/1600%>
+        <br>
+      <%end%>
+      </p>
+    </div>
 
-</div>
+  </div>
 </body>

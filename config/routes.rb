@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :destinations, only: [:show, :edit, :update, :new, :create, :destroy]
+  resources :destinations do
+    member do
+      get'default_image'
+    end
+  end
   resources :trips
   root 'trips#index'
 end

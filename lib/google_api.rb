@@ -47,8 +47,11 @@ class GoogleApi
   end
 
   def photo_url
-    return if photo_reference.nil?
-    GOOGLE_IMAGE_URL + '?photoreference=' + photo_reference + '&key=' + API_KEY + '&maxwidth=540'
+    if photo_reference.nil?
+      return ""
+    else
+      GOOGLE_IMAGE_URL + '?photoreference=' + photo_reference + '&key=' + API_KEY + '&maxwidth=540'
+    end
   end
 
   def distance_results(other_destinations)

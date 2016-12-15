@@ -1,5 +1,19 @@
-<h1>Editing <%=@destination.city%></h1>
-
-<%= render 'form' %>
-
-<%= link_to 'Cancel', destination_path(@destination) %>
+<h1><%=@destination.city%></h1>
+<%if !@destination.picture.empty?%>
+  <h3>Current Image:</h3>
+  <img src=<%=@destination.picture%> width="540" height="auto">
+  <br>
+  <br>
+<%end%>
+<%=form_for(@destination) do |f| %>
+  <div class="field">
+    <%= f.label :picture_link%>
+    <%= f.text_field :picture, value: ""%>
+  </div>
+  <div class="actions">
+    <%= f.submit%>
+  </div>
+<%end%>
+<%= link_to 'Reset to Default Image', default_image_destination_path(@destination), class: "btn btn-sm btn-primary"%>
+<br>
+<%= link_to 'Cancel', destination_path(@destination), class: "btn btn-sm btn-primary" %>
